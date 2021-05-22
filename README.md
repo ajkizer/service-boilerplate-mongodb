@@ -22,5 +22,5 @@ PORT: sets the port to the specified value.  If no value is provided, it will de
 MONGO_URI: MongoDB connection URI
 
  If using auth middleware
-**JWT_SECRET**
+JWT_SECRET
 ```
