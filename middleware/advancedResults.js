@@ -20,18 +20,11 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  if (req.params.aquariumId) {
-    query = model.find({
-      user: req.user.id,
-      aquarium: req.params.aquariumId,
-      ...JSON.parse(queryStr),
-    });
-  } else {
     query = model.find({
       user: req.user.id,
       ...JSON.parse(queryStr),
     });
-  }
+ 
   //select fields
   if (req.query.select) {
     const fields = req.query.select.split(",").join(" ");
@@ -50,15 +43,8 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  let total;
+  const total = await model.countDocuments();
 
-  if (req.params.aquariumId) {
-    total = await model.countDocuments({
-      aquarium: req.params.aquariumId,
-    });
-  } else {
-    total = await model.countDocuments();
-  }
 
   query = query.skip(startIndex).limit(limit);
 
